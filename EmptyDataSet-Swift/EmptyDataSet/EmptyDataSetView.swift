@@ -302,11 +302,31 @@ public class EmptyDataSetView: UIView {
     }
     
     // Return either the contentView or customView
-    if hitView == customView || hitView == contentView {
+    if hitView == contentView {
+      return hitView
+    }
+    
+    if let customView = customView, isHitViewSubViewOf(parentView: customView, hitView: hitView) {
       return hitView
     }
     
     return nil
+  }
+  
+  private func isHitViewSubViewOf(parentView: UIView, hitView: UIView) -> Bool {
+    let views = parentView.subviews
+    let count = views.count
+    for i in 0..<count {
+      if views[i] == hitView {
+        return true
+      } else {
+        if isHitViewSubViewOf(parentView: views[i], hitView: hitView) {
+          return true
+        }
+      }
+    }
+  
+    return false
   }
 }
 
