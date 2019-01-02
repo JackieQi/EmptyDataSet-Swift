@@ -212,7 +212,9 @@ public class EmptyDataSetView: UIView {
             }
           
             self.addConstraints([heightConstarint, widthConstarint])
-
+          
+          self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[customView]|", options: [], metrics:nil, views: ["customView": customView]))
+          self.contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[customView]|", options: [], metrics:nil, views: ["customView": customView]))
         } else {
             
             let width = frame.width > 0 ? frame.width : UIScreen.main.bounds.width
