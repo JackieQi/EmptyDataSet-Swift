@@ -189,6 +189,12 @@ public class EmptyDataSetView: UIView {
         }
         
         if let customView = customView {
+          // hide default ui components
+          imageView.isHidden = true
+          button.isHidden = true
+          titleLabel.isHidden = true
+          detailLabel.isHidden = true
+          
             let customViewHeight = customView.frame.height
             let customViewWidth = customView.frame.width
             var heightConstarint: NSLayoutConstraint!
