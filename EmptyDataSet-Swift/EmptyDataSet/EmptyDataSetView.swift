@@ -189,33 +189,30 @@ public class EmptyDataSetView: UIView {
         }
         
         if let customView = customView {
-            let centerXConstraint = NSLayoutConstraint(item: customView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0.0)
-            let centerYConstraint = NSLayoutConstraint(item: customView, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: 0.0)
-            
             let customViewHeight = customView.frame.height
             let customViewWidth = customView.frame.width
             var heightConstarint: NSLayoutConstraint!
             var widthConstarint: NSLayoutConstraint!
-            
+          
+          let topOffset: CGFloat = (verticalOffset > 0.0) ? verticalOffset : 0.0
+          let bottemOffset: CGFloat = (verticalOffset < 0.0) ? -verticalOffset : 0.0
+          
+          self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(topOffset)-[contentView]-(bottemOffset)-|", options: [], metrics: ["topOffset": topOffset, "bottemOffset": bottemOffset], views: ["customView": customView]))
+          
             if(customViewHeight == 0) {
                 heightConstarint = NSLayoutConstraint(item: customView, attribute: .height, relatedBy: .lessThanOrEqual, toItem: self, attribute: .height, multiplier: 1, constant: 0.0)
             } else {
                 heightConstarint = NSLayoutConstraint(item: customView, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: customViewHeight)
             }
+          
             if(customViewWidth == 0) {
                 widthConstarint = NSLayoutConstraint(item: customView, attribute: .width, relatedBy: .lessThanOrEqual, toItem: self, attribute: .width, multiplier: 1, constant: 0.0)
             } else {
                 widthConstarint = NSLayoutConstraint(item: customView, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: customViewWidth)
             }
-            
-            // When a custom offset is available, we adjust the vertical constraints' constants
-            if (verticalOffset != 0) {
-                centerYConstraint.constant = verticalOffset
-            }
-            self.addConstraints([centerXConstraint, centerYConstraint])
+          
             self.addConstraints([heightConstarint, widthConstarint])
-//            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[customView]|", options: [], metrics: nil, views: ["customView": customView]))
-//            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[customView]|", options: [], metrics: nil, views: ["customView": customView]))
+
         } else {
             
             let width = frame.width > 0 ? frame.width : UIScreen.main.bounds.width
@@ -291,6 +288,23 @@ public class EmptyDataSetView: UIView {
         }
         
     }
+  
+  override public func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    let theHitView = super.hitTest(point, with: event)
     
+    guard let hitView = theHitView else { return nil }
+    
+    // Return any UIControl instance such as buttons, segmented controls, switches, etc.
+    if hitView is UIControl {
+      return hitView
+    }
+    
+    // Return either the contentView or customView
+    if hitView == customView || hitView == contentView {
+      return hitView
+    }
+    
+    return nil
+  }
 }
 
