@@ -195,9 +195,9 @@ public class EmptyDataSetView: UIView {
             var widthConstarint: NSLayoutConstraint!
           
           let topOffset: CGFloat = (verticalOffset > 0.0) ? verticalOffset : 0.0
-          let bottemOffset: CGFloat = (verticalOffset < 0.0) ? -verticalOffset : 0.0
+          let bottomOffset: CGFloat = (verticalOffset < 0.0) ? -verticalOffset : 0.0
           
-          self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(topOffset)-[contentView]-(bottemOffset)-|", options: [], metrics: ["topOffset": topOffset, "bottemOffset": bottemOffset], views: ["customView": customView]))
+          self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-(topOffset)-[contentView]-(bottomOffset)-|", options: [], metrics: ["topOffset": topOffset, "bottomOffset": bottomOffset], views: ["contentView": contentView]))
           
             if(customViewHeight == 0) {
                 heightConstarint = NSLayoutConstraint(item: customView, attribute: .height, relatedBy: .lessThanOrEqual, toItem: self, attribute: .height, multiplier: 1, constant: 0.0)
